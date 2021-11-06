@@ -8,18 +8,52 @@ namespace SuperHeroDB.Server.Controllers
     [ApiController]
     public class SuperHeroController : ControllerBase
     {
-        static List<Comic> comics = new List<Comic> 
-        { 
-            new Comic{ Name="Marvel"},
-            new Comic{ Name="DC"}
-        };
-        List<SuperHero> heroes = new List<SuperHero>
+        static List<Comic> comics = new List<Comic>
         {
-            new SuperHero {FirstName = "Peter", LastName ="Parker", HeroName="Spiderman", Comic= comics[0]},
-            new SuperHero {FirstName = "Bruce", LastName ="Wynce", HeroName="Batman", Comic= comics[1]}
+            new Comic{ Id = 1, Name="Marvel"},
+            new Comic{ Id = 2, Name="DC"}
         };
+        static List<SuperHero> heroes = new List<SuperHero>
+        {
+            new SuperHero {Id = 1 , FirstName = "Peter", LastName ="Parker", HeroName="Spiderman", Comic= comics[0]},
+            new SuperHero {Id = 2 , FirstName = "Bruce", LastName ="Wynce", HeroName="Batman", Comic= comics[1]}
+        };
+        [HttpGet("comics")]
+        public async Task<IActionResult> GetComics()
+        {
+            return Ok(comics);
+        }
+        [HttpGet]
         public async Task<IActionResult> GetSuperHeroes()
         {
+            return Ok(heroes);
+        }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetSingleSuperHero(int Id)
+        {
+            var hero = heroes.FirstOrDefault(h => h.Id == Id);
+            if (hero == null)
+            {
+                return NotFound("Super Hero wasn't Found. Too bad. :(");
+            }
+            return Ok(hero);
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateSuperHero(SuperHero hero)
+        {
+            hero.Id = heroes.Max(h => h.Id + 1);
+            heroes.Add(hero);
+            return Ok(heroes);
+        }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateSuperHero(SuperHero hero, int Id)
+        {
+            var dbHero = heroes.FirstOrDefault(h => h.Id == Id);
+            if (dbHero == null)
+            {
+                return NotFound("Super Hero wasn't Found. Too bad. :(");
+            }
+            dbHero = hero;
             return Ok(heroes);
         }
     }
