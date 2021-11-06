@@ -53,7 +53,8 @@ namespace SuperHeroDB.Server.Controllers
             {
                 return NotFound("Super Hero wasn't Found. Too bad. :(");
             }
-            dbHero = hero;
+            var index = heroes.IndexOf(dbHero);
+            heroes[index] = hero;
             return Ok(heroes);
         }
     }
