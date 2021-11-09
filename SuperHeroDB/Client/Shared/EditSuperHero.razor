@@ -1,7 +1,14 @@
 ﻿@inject ISuperHeroService SuperHeroService
 @inject IJSRuntime JSRuntime
-<h3>EditSuperHero</h3>
 
+@if(Hero.Id==0)
+{
+    <h3>Create a new SuperHero</h3>
+}
+else 
+{
+    <h3>Edit @Hero.HeroName</h3>
+}
 <EditForm Model="Hero" OnSubmit="HandleSubmit">
     <div class="form-group">
         <label>First Name</label>

@@ -46,5 +46,13 @@ namespace SuperHeroDB.Client.Services
             OnChange.Invoke();
             return Heroes;
         }
+
+        public async Task<List<SuperHero>> DeleteSuperHero(int id)
+        {
+            var result = await _httpClient.DeleteAsync($"api/superhero/{id}");
+            Heroes = await result.Content.ReadFromJsonAsync<List<SuperHero>>();
+            OnChange.Invoke();
+            return Heroes;
+        }
     }
 }
